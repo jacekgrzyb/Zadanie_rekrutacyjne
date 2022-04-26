@@ -14,11 +14,12 @@ import java.util.stream.Collectors;
 public class Wall implements Structure {
     //Variable definitions
     private List<BlockImpl> blocks;
+
+    //Methods definition
     public List<BlockImpl> getBlocks() {
         return blocks;
     }
 
-    //Methods definition
     public void setBlocks(List<BlockImpl> blocks) {
         this.blocks = blocks;
     }
@@ -33,12 +34,34 @@ public class Wall implements Structure {
 
     @Override
     public Optional<BlockImpl> findBlockByColor(String color) {
-        return blocks.stream().filter(e->e.getColor().equalsIgnoreCase(color)).findAny();
+        Optional<BlockImpl> optional = Optional.ofNullable(null);
+        for (BlockImpl block : blocks) {
+            if (block.isCompositeBlock()) {
+                optional = block.getBlocks().stream().filter(e -> e.getColor().equalsIgnoreCase(color)).findAny();
+            } else {
+                optional = Optional.ofNullable(block.getColor().equalsIgnoreCase(color) ? block : null);
+            }
+        }
+        return optional;
     }
 
     @Override
     public List<BlockImpl> findBlocksByMaterial(String material) {
-        return blocks.stream().filter(e->e.getMaterial().equalsIgnoreCase(material)).collect(Collectors.toList());
+        List<BlockImpl> list = new ArrayList<>();
+        for (BlockImpl block : blocks) {
+            if (block.isCompositeBlock()) {
+                for (BlockImpl blockComposite: block.getBlocks()) {
+                    if (blockComposite.getMaterial().equalsIgnoreCase(material)) {
+                        list.add(blockComposite);
+                    }
+                }
+            } else {
+                if (block.getMaterial().equalsIgnoreCase(material)) {
+                    list.add(block);
+                }
+            }
+        }
+        return list;
     }
 
     @Override

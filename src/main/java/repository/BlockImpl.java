@@ -13,15 +13,23 @@ public class BlockImpl implements CompositeBlock {
     private boolean compositeBlock;
     private List<BlockImpl> blockList;
 
-    public BlockImpl(String color, String material, boolean compositeBlock) {
+    private BlockImpl(String color, String material, boolean compositeBlock) {
         this.color = color;
         this.material = material;
         this.compositeBlock = compositeBlock;
     }
 
-    public BlockImpl(List<BlockImpl> blockList, boolean compositeBlock) {
+    private  BlockImpl(List<BlockImpl> blockList, boolean compositeBlock) {
         this.compositeBlock = compositeBlock;
         this.blockList = blockList;
+    }
+
+    public static BlockImpl newBlock (String color, String material) {
+        return new BlockImpl(color, material, false);
+    }
+
+    public static BlockImpl newCompositeBlock (List<BlockImpl> blocks) {
+        return new BlockImpl(blocks, true);
     }
 
     public boolean isCompositeBlock() {
