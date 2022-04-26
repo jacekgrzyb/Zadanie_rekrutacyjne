@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface Structure {
 
-    Optional<BlockImpl> findBlockByColor(String color);
+    Optional findBlockByColor(String color);
 
-    List<BlockImpl> findBlocksByMaterial(String material);
+    List findBlocksByMaterial(String material);
 
     int count();
 
